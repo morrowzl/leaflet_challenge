@@ -13,10 +13,22 @@ Pass baseMaps and overlayMaps;
 Add layer control to map;
 */
 
+/*
+Markers should reflect the magnitude of the earthquake in their size and color.
+access quake's magnitude at:
+feature.properties.mag (decimal)
+markerRadius(quake's magnitude)
+markerColor(quake's magnitude) 
+look at leaflet documentation for specifying feature marker style, size and color
+Earthquakes with higher magnitudes should appear larger and darker in color.
+Create a legend that will provide context for your map data.
+*/
+
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 d3.json(queryUrl, function(data) {
     createFeatures(data.features);
+    console.log(data.features);
 });
 
 function createFeatures(earthquakeData) {
@@ -27,12 +39,13 @@ function createFeatures(earthquakeData) {
     "</h3><hr><p>" + 
     new Date(feature.properties.time) + 
     "</p>");
+    // obj.
   }
 
   var earthquakeFeatures = L.geoJSON(earthquakeData, {
     onEachFeature: processFeature
   });
-
+  console.log(earthquakeFeatures);
   mapTheQuakes(earthquakeFeatures);
 }
 
