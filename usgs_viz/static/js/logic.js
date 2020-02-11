@@ -38,11 +38,11 @@ function createFeatures(earthquakeData) {
 
 function mapTheQuakes(earthquakeFeatures) {
 
-  var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  var lightmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     minZoom:3,
     maxZoom: 15,
-    id: "mapbox.streets",
+    id: "mapbox.light",
     accessToken: please
   });
 
@@ -56,7 +56,7 @@ function mapTheQuakes(earthquakeFeatures) {
 
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
-    "Street Map": streetmap,
+    "Light Map": lightmap,
     "Dark Map": darkmap
   };
 
@@ -71,7 +71,7 @@ function mapTheQuakes(earthquakeFeatures) {
       39.99, -95.30
     ],
     zoom: 4.5,
-    layers: [streetmap, earthquakeFeatures]
+    layers: [lightmap, earthquakeFeatures]
   });
 
   // Create a layer control
