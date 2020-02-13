@@ -120,7 +120,7 @@ function mapTheQuakes(earthquakeFeatures) {
     minZoom:3,
     maxZoom: 15,
     id: "mapbox.light",
-    accessToken: please
+    accessToken: yourKey
   });
 
   var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
