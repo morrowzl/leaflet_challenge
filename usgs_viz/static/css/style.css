@@ -10,3 +10,63 @@ body,
 html {
   height: 100%;
 }
+
+/* #map {
+  color: #ff0000;
+  color: #fc4f30;
+  color: #ff9742;
+  color: #ffc75e;
+  color: #fafc82;
+  color: #e2ff9e;
+  color: #000000;
+} */
+
+table {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  vertical-align: middle;  
+}
+
+tbody {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  vertical-align: middle;  
+}
+
+.labels {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.legend {
+  padding: 6px 8px;
+  font: 12px Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #555;
+  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.legend h2 {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  font-weight: bolder!important;  
+}
+.legend ul {
+  padding: 0;
+  margin: 0;
+  clear: both;
+  list-style-type: none;
+}
+
+.legend li {
+  /* display: inline-block; */
+  width: 30px;
+  height: 22px;
+}

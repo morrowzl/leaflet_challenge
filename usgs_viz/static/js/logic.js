@@ -26,32 +26,44 @@ Create a legend that will provide context for your map data.
 
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
+var overFive = "#ff0000";
+var overFour = "#fc4f30";
+var overThree = "#ff9742";
+var overTwo = "#ffc75e";
+var overOne = "#fafc82";
+var zeroToOne = "#e2ff9e";
+var colorRanges = [zeroToOne, overOne, overTwo, overThree, overFour, overFive];
+var rangeLabels = ["0 - 1", "> 1", "> 2", "> 3", "> 4", "> 5"];
+
 d3.json(queryUrl, function(data) {
     createFeatures(data.features);
-    console.log(data.features);
 });
 
 function createFeatures(earthquakeData) {
   
   function processFeature(feature, obj) {    
-    obj.bindPopup("<h3>" + 
+    obj.bindPopup("<h3>Magnitude: " + 
+    feature.properties.mag + 
+    "</h3><h5>Location: " + 
     feature.properties.place + 
-    "</h3><hr><p>" + 
+    "</h5><h5>Time: " + 
     new Date(feature.properties.time) + 
-    "</p>");
+    "</h5>" 
+    );
   }
 
   function magStyles(feature) {
     return {
       opacity: 1,
-      fillOpacity: 0.55,
+      fillOpacity: 0.65,
       // fillColor: "#e7d000",
       fillColor: magColor(feature.properties.mag),
-      color: magColor(feature.properties.mag),
+      color: "#000000",
+      // color: magColor(feature.properties.mag),
       // radius: feature.properties.mag * 4,
       radius: magRadius(feature.properties.mag),
       stroke: true,
-      weight: 1.5     
+      weight: 1     
     };
   }
 
@@ -60,24 +72,33 @@ function createFeatures(earthquakeData) {
       return 1;
     } else {
       // return Math.pow(Math.E, (magnitude));
-      return magnitude * 2.75;
+      // return magnitude * 2.75;
+      return magnitude + (5 * magnitude);
     }
   }
+
+  // var overFive = "#ff0000";
+  // var overFour = "#fc4f30";
+  // var overThree = "#ff9742";
+  // var overTwo = "#ffc75e";
+  // var overOne = "#fafc82";
+  // var zeroToOne = "#e2ff9e";
+  // var colorRanges = [zeroToOne, overOne, overTwo, overThree, overFour, overFive];
 
   function magColor(magnitude) {
     switch (true) {
     case magnitude > 5:
-      return "#e70000";
+      return overFive;
     case magnitude > 4:
-      return "#e75c00";
+      return overFour;
     case magnitude > 3:
-      return "#e7d000";
+      return overThree;
     case magnitude > 2:
-      return "#83e700";
+      return overTwo;
     case magnitude > 1:
-      return "#0092e7";
+      return overOne;
     default:
-      return "#e700db";
+      return zeroToOne;
     }    
   }
 
@@ -89,7 +110,6 @@ function createFeatures(earthquakeData) {
     onEachFeature: processFeature
   });
 
-  console.log(earthquakeFeatures);
   mapTheQuakes(earthquakeFeatures);
 }
 
@@ -136,5 +156,31 @@ function mapTheQuakes(earthquakeFeatures) {
   // Add the layer control to the map
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
-  }).addTo(myMap);  
+  }).addTo(myMap);
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+    var swatches = [];
+    var labels = [];
+
+    var legendInfo = "<h2>Magnitude</h2>" +
+      "<div class=\"labels\">" +
+        // "<div class=\"zeroToOne\">0 - 1</div>" + 
+        // "<div class=\"overOne\">m > 1</div>" + 
+        // "<div class=\"overTwo\">m > 2</div>" + 
+        // "<div class=\"overThree\">m > 3</div>" + 
+        // "<div class=\"overFour\">m > 4</div>" + 
+        // "<div class=\"overFive\">m > 5</div>" + 
+      "</div>";
+    div.innerHTML = legendInfo;
+    colorRanges.forEach(function(range, index) {
+      swatches.push("<li style=\"background-color: " + colorRanges[index] + "\"></li>");
+    });
+    rangeLabels.forEach(function(range, index) {
+      labels.push("<li>" + rangeLabels[index] + "</li>");
+    });
+    div.innerHTML += "<table><tbody><tr><td><ul>" + swatches.join("") + "</ul></td><td><ul>" + labels.join("") + "</ul></td></tr></tbody></table>";
+    return div;
+  };
+  legend.addTo(myMap);     
 }
