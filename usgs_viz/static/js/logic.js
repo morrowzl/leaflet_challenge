@@ -39,12 +39,56 @@ function createFeatures(earthquakeData) {
     "</h3><hr><p>" + 
     new Date(feature.properties.time) + 
     "</p>");
-    // obj.
   }
 
-  var earthquakeFeatures = L.geoJSON(earthquakeData, {
+  function magStyles(feature) {
+    return {
+      opacity: 1,
+      fillOpacity: 0.55,
+      // fillColor: "#e7d000",
+      fillColor: magColor(feature.properties.mag),
+      color: magColor(feature.properties.mag),
+      // radius: feature.properties.mag * 4,
+      radius: magRadius(feature.properties.mag),
+      stroke: true,
+      weight: 1.5     
+    };
+  }
+
+  function magRadius(magnitude) {
+    if (magnitude === 0) {
+      return 1;
+    } else {
+      // return Math.pow(Math.E, (magnitude));
+      return magnitude * 2.75;
+    }
+  }
+
+  function magColor(magnitude) {
+    switch (true) {
+    case magnitude > 5:
+      return "#e70000";
+    case magnitude > 4:
+      return "#e75c00";
+    case magnitude > 3:
+      return "#e7d000";
+    case magnitude > 2:
+      return "#83e700";
+    case magnitude > 1:
+      return "#0092e7";
+    default:
+      return "#e700db";
+    }    
+  }
+
+  var earthquakeFeatures = L.geoJson(earthquakeData, {
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng);
+    },
+    style: magStyles,
     onEachFeature: processFeature
   });
+
   console.log(earthquakeFeatures);
   mapTheQuakes(earthquakeFeatures);
 }
